@@ -182,27 +182,16 @@ CREATE TRIGGER thread_paste_forum_user AFTER INSERT ON thread FOR EACH ROW EXECU
 
 -- indexes
 
-------------Индексы таблицы users------------
-CREATE INDEX IF NOT EXISTS users_email ON users (email);
-CREATE INDEX IF NOT EXISTS users_nickname ON users (nickname);
-----------------------------------------------
+CREATE INDEX IF NOT EXISTS users_email ON users USING hash (email);
+CREATE INDEX IF NOT EXISTS users_nickname ON users USING hash (nickname);
 
-------------Индексы таблицы forum------------
-CREATE INDEX IF NOT EXISTS forum_hash_slug ON forum (slug);
-----------------------------------------------
+CREATE INDEX IF NOT EXISTS forum_slug ON forum USING hash (slug);
 
-------------Индексы таблицы thread------------
-CREATE INDEX IF NOT EXISTS thread_slug ON thread (slug);
-CREATE INDEX IF NOT EXISTS thread_forum ON thread (forum);
-----------------------------------------------
+CREATE INDEX IF NOT EXISTS thread_slug ON thread USING hash (slug);
+CREATE INDEX IF NOT EXISTS thread_forum ON thread USING hash (forum);
 
-----------Индексы таблицы post------------
 CREATE INDEX IF NOT EXISTS post_thread_thread ON post (thread);
-CREATE INDEX IF NOT EXISTS post_thread_forum ON post (forum);
-CREATE INDEX IF NOT EXISTS post_thread_pathes ON post (forum, (path[1]), (path[2:]));
+CREATE INDEX IF NOT EXISTS post_forum ON post USING hash (forum);
+CREATE INDEX IF NOT EXISTS post_pathes ON post (forum, (path[1]), (path[2:]));
 
-------------Индексы таблицы forum_users------------
-CREATE INDEX IF NOT EXISTS fu_thread_thread ON forum_users (forum);
-
-VACUUM;
-VACUUM ANALYSE;
+CREATE INDEX IF NOT EXISTS fu_forum ON forum_users USING hash (forum);

@@ -55,7 +55,7 @@ func getPostgres(dsn string) *sql.DB {
 
 func main() {
 
-	sqlDB := getPostgres("postgres://postgres:password@127.0.0.1:5432/forum")
+	sqlDB := getPostgres("postgres://aleksandr:password@127.0.0.1:5432/forum")
 	defer sqlDB.Close()
 
 	r := mux.NewRouter()
